@@ -1,0 +1,6 @@
+com\bookstore\book\dto\BookDTO.class
+com\bookstore\book\repository\BookRepository.class
+com\bookstore\book\controller\BookController.class
+com\bookstore\book\service\BookService.class
+com\bookstore\book\BookServiceApplication.class
+com\bookstore\book\model\Book.class

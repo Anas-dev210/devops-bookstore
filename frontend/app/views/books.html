@@ -1,0 +1,22 @@
+<div class="container">
+  <h2 class="text-primary">Books</h2>
+
+  <form class="form-inline" ng-submit="addBook(newBook)" name="bookForm">
+    <div class="form-group">
+      <input type="text" class="form-control" ng-model="newBook.title" placeholder="Title" required />
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" ng-model="newBook.author" placeholder="Author" required />
+    </div>
+    <button type="submit" class="btn btn-success" ng-disabled="bookForm.$invalid">Add Book</button>
+  </form>
+
+  <div ng-show="loading" class="text-info">Loading books...</div>
+  <div ng-show="error" class="text-danger">{{ error }}</div>
+
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="book in books">
+      <strong>{{ book.title }}</strong> by {{ book.author }}
+    </li>
+  </ul>
+</div>

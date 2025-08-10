@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: bookstore-db
+    environment:
+      POSTGRES_DB: bookstore
+      POSTGRES_USER: anas
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    networks:
+      - bookstore-net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  user-service:
+    build: ./backend/user-service
+    container_name: backend-service-1
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "java", "-jar", "app.jar"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bookstore
+      SPRING_DATASOURCE_USERNAME: anas
+      SPRING_DATASOURCE_PASSWORD: secret
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    networks:
+      - bookstore-net
+
+  book-service:
+    build: ./backend/book-service
+    container_name: backend-service-2
+    restart: always
+    ports:
+      - "8082:8080"
+    depends_on:
+      - postgres
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "java", "-jar", "app.jar"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bookstore
+      SPRING_DATASOURCE_USERNAME: anas
+      SPRING_DATASOURCE_PASSWORD: secret
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    networks:
+      - bookstore-net
+
+  order-service:
+    build: ./backend/order-service
+    container_name: backend-service-3
+    restart: always
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres
+    command: ["./wait-for-it.sh", "postgres:5432", "--", "java", "-jar", "app.jar"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bookstore
+      SPRING_DATASOURCE_USERNAME: anas
+      SPRING_DATASOURCE_PASSWORD: secret
+    volumes:
+      - ./wait-for-it.sh:/wait-for-it.sh
+    networks:
+      - bookstore-net
+
+  frontend:
+    build: ./frontend
+    container_name: frontend-app
+    restart: always
+    depends_on:
+      - user-service
+      - book-service
+      - order-service
+    ports:
+      - "4200:4200"
+    networks:
+      - bookstore-net
+
+networks:
+  bookstore-net:
+    driver: bridge
+
+volumes:
+  postgres_data:

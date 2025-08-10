@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS books (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  author VARCHAR(100),
+  price DECIMAL(10,2)
+);

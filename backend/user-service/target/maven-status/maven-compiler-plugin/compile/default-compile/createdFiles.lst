@@ -1,0 +1,6 @@
+com\bookstore\user\controller\UserController.class
+com\bookstore\user\dto\UserDTO.class
+com\bookstore\user\repository\UserRepository.class
+com\bookstore\user\model\User.class
+com\bookstore\user\service\UserService.class
+com\bookstore\user\UserServiceApplication.class
